@@ -1,0 +1,6 @@
+[submodule "u-boot"]
+	path = repos/u-boot
+	url = https://github.com/u-boot/u-boot
+[submodule "opensbi"]
+	path = repos/opensbi
+	url = https://github.com/riscv-software-src/opensbi
