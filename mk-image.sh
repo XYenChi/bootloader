@@ -13,6 +13,7 @@ sudo e2label /dev/loop0p3 rootfs
 sudo mkdir rootfs
 sudo mount /dev/loop0p3 rootfs/
 sudo pacstrap rootfs base dracut-hook linux
+sudo usermod --root ./rootfs --password archriscv root
 sudo mkdir rootfs/boot/extlinux
 tee -a rootfs/boot/extlinux/extlinux.conf << END
 default arch
@@ -26,6 +27,13 @@ label arch
         initrd /boot/initramfs-linux.img
         fdtdir /boot/dtbs/
         append root=LABEL="rootfs" rw earlycon
+
+label arch-fallback
+        menu label Arch Linux(fallback initramfs)
+        linux /boot/vmlinuz-linux
+        initrd /boot/initramfs-linux-fallback.img
+        fdtdir /boot/dtbs/
+        append root=/dev/mmcblk0p3 rw earlycon
 END
 sudo cp -r rootfs/usr/share/dtbs/*-arch*/ rootfs/boot/dtbs
 sudo umount -l rootfs
