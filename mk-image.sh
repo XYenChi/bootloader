@@ -9,11 +9,11 @@ dd if=$PWD/repos/u-boot/u-boot.itb of=image.raw bs=512 seek=2082 conv=sync,notru
 sudo losetup -D
 sudo losetup -f -P image.raw
 sudo mkfs.ext4 /dev/loop0p3
-sudo e2label /dev/loop0p3 rootfs
 sudo mkdir rootfs
 sudo mount /dev/loop0p3 rootfs/
 sudo pacstrap rootfs base dracut-hook linux
 sudo usermod --root ./rootfs --password archriscv root
+sudo cat "pts/0\n" >> rootfs/etc/securetty
 sudo mkdir rootfs/boot/extlinux
 tee -a rootfs/boot/extlinux/extlinux.conf << END
 default arch
@@ -26,7 +26,7 @@ label arch
         linux /boot/vmlinuz-linux
         initrd /boot/initramfs-linux.img
         fdtdir /boot/dtbs/
-        append root=LABEL="rootfs" rw earlycon
+        append root=/dev/mmcblk0p3 rw earlycon
 
 label arch-fallback
         menu label Arch Linux(fallback initramfs)
