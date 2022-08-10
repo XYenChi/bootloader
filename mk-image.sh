@@ -11,9 +11,9 @@ sudo losetup -f -P image.raw
 sudo mkfs.ext4 /dev/loop0p3
 sudo mkdir rootfs
 sudo mount /dev/loop0p3 rootfs/
-sudo pacstrap rootfs base dracut-hook linux
-sudo usermod --root ./rootfs --password archriscv root
-sudo cat "pts/0\n" >> rootfs/etc/securetty
+sudo pacstrap rootfs base dracut-hook linux vim
+sudo echo "root:archriscv" | chpasswd -R $PWD/rootfs
+sudo echo "pts/0\n" >> rootfs/etc/securetty
 sudo mkdir rootfs/boot/extlinux
 tee -a rootfs/boot/extlinux/extlinux.conf << END
 default arch
@@ -36,6 +36,25 @@ label arch-fallback
         append root=/dev/mmcblk0p3 rw earlycon
 END
 sudo cp -r rootfs/usr/share/dtbs/*-arch*/ rootfs/boot/dtbs
+tee -a rootfs/etc/systemd/network/eth0.network << END
+[Match]
+Name=eth0
+[Network]
+DHCP=yes
+END
+tee -a rootfs/etc/pacman.conf << END
+[core]
+Server = https://archriscv.felixc.at/repo/$repo
+
+[extra]
+Server = https://archriscv.felixc.at/repo/$repo
+
+[community]
+Server = https://archriscv.felixc.at/repo/$repo
+
+[unsupported]
+Server = https://archriscv.felixc.at/repo/$repo
+END
 sudo umount -l rootfs
 sudo rmdir rootfs
 sudo losetup -D
