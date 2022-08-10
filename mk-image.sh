@@ -11,7 +11,7 @@ sudo losetup -f -P image.raw
 sudo mkfs.ext4 /dev/loop0p3
 sudo mkdir rootfs
 sudo mount /dev/loop0p3 rootfs/
-sudo pacstrap rootfs base dracut-hook linux vim
+sudo pacstrap rootfs base dracut-hook linux vim arch-install-scripts
 sudo echo "root:archriscv" | chpasswd -R $PWD/rootfs
 sudo echo "pts/0\n" >> rootfs/etc/securetty
 sudo mkdir rootfs/boot/extlinux
@@ -42,19 +42,7 @@ Name=eth0
 [Network]
 DHCP=yes
 END
-tee -a rootfs/etc/pacman.conf << END
-[core]
-Server = https://archriscv.felixc.at/repo/$repo
-
-[extra]
-Server = https://archriscv.felixc.at/repo/$repo
-
-[community]
-Server = https://archriscv.felixc.at/repo/$repo
-
-[unsupported]
-Server = https://archriscv.felixc.at/repo/$repo
-END
+sudo cp /etc/pacman.conf rootfs/etc/pacman.conf
 sudo umount -l rootfs
 sudo rmdir rootfs
 sudo losetup -D
