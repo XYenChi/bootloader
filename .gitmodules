@@ -4,3 +4,6 @@
 [submodule "opensbi"]
 	path = repos/opensbi
 	url = https://github.com/riscv-software-src/opensbi
+[submodule "repos/qemu-system"]
+	path = repos/qemu-system
+	url = https://github.com/Avimitin/archriscv-scriptlet-for-bootloader.git
