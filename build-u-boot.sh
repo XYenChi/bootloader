@@ -1,6 +1,5 @@
 CWD=$PWD
 cd $PWD/repos/u-boot/
-pacman -S --needed --noconfirm python3 flex bison swig python-setuptools base-devel
 git clean -fdx
 git reset --hard origin/master
 git apply $CWD/patches/u-boot/riscv-Fix-build-against-binutils-2.38.diff
