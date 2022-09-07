@@ -31,7 +31,7 @@ index f3a661a81e..05ba59160a 100644
  #define MODE_SELECT_MASK	GENMASK(3, 0)
  
 +#define TMP451_REMOTE_THERM_LIMIT_REG_OFFSET	0x19
-+#define TMP451_REMOTE_THERM_LIMIT_INIT_VALUE	0x55
++#define TMP451_REMOTE_THERM_LIMIT_INIT_VALUE	0x96
 +
 +static inline int init_tmp451_remote_therm_limit(void)
 +{
