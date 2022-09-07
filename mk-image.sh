@@ -1,3 +1,7 @@
+# truncate will not allocate new space if file is already exist,
+# which might lead to some unexpected issue.
+[[ -f image.raw ]] && rm image.raw
+
 # create a file with 2G size
 truncate -s 2G image.raw
 
