@@ -22,7 +22,7 @@ mkfs.ext4 /dev/loop0p3
 mkdir rootfs
 mount /dev/loop0p3 rootfs/
 
-pacstrap rootfs base dracut-hook linux vim arch-install-scripts
+pacstrap rootfs base linux vim arch-install-scripts
 
 echo "root:archriscv" | chpasswd -R $PWD/rootfs
 echo "pts/0\n" >> rootfs/etc/securetty
