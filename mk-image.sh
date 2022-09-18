@@ -22,9 +22,10 @@ mkfs.ext4 /dev/loop0p3
 mkdir rootfs
 mount /dev/loop0p3 rootfs/
 
-pacstrap rootfs base linux vim arch-install-scripts
+pacstrap rootfs base linux linux-firmware vim arch-install-scripts
 
-echo "root:archriscv" | chpasswd -R $PWD/rootfs
+usermod --root $(realpath ./rootfs) --password $(openssl passwd -6 "archriscv") root
+
 echo "pts/0\n" >> rootfs/etc/securetty
 mkdir rootfs/boot/extlinux
 tee -a rootfs/boot/extlinux/extlinux.conf << END
@@ -35,13 +36,6 @@ timeout 50
 
 label arch
         menu label Arch Linux
-        linux /boot/vmlinuz-linux
-        initrd /boot/initramfs-linux.img
-        fdtdir /boot/dtbs/
-        append root=/dev/mmcblk0p3 rw earlycon
-
-label arch-fallback
-        menu label Arch Linux(fallback initramfs)
         linux /boot/vmlinuz-linux
         initrd /boot/initramfs-linux-fallback.img
         fdtdir /boot/dtbs/
