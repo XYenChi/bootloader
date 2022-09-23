@@ -1,6 +1,8 @@
+. $PWD/utils.sh
+
 # truncate will not allocate new space if file is already exist,
 # which might lead to some unexpected issue.
-[[ -f image.raw ]] && rm image.raw
+[[ -f image.raw ]] && rm -f image.raw
 
 # create a file with 2G size
 truncate -s 2G image.raw
@@ -22,7 +24,15 @@ mkfs.ext4 /dev/loop0p3
 mkdir rootfs
 mount /dev/loop0p3 rootfs/
 
-pacstrap rootfs base linux linux-firmware vim arch-install-scripts
+if is_cross_compile "$@"; then
+  pacstrap \
+      -C /usr/share/devtools/pacman-extra-riscv64.conf \
+      -M \
+      ./rootfs \
+      base linux linux-firmware vim arch-install-scripts
+else
+  pacstrap rootfs base linux linux-firmware vim arch-install-scripts
+fi
 
 usermod --root $(realpath ./rootfs) --password $(openssl passwd -6 "archriscv") root
 
