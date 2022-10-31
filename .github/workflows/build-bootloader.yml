@@ -27,5 +27,10 @@ jobs:
         run: ./build-opensbi.sh cross-compile
       - name: Build U-Boot
         run: ./build-u-boot.sh cross-compile
+      - name: Prepare devtools
+        run: |
+          git clone https://aur.archlinux.org/devtools-riscv64.git
+          cd devtools-riscv64
+          makepkg -si
       - name: Make image
         run: ./mk-image.sh cross-compile
