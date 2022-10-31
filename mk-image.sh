@@ -44,8 +44,7 @@ if is_cross_compile "$@"; then
       -C ./pacman-extra-riscv64.conf \
       -M \
       ./rootfs \
-      base
-  arch-chroot rootfs pacman --noconfirm -Syu linux linux-firmware vim arch-install-scripts
+      base linux linux-firmware vim arch-install-scripts
 else
   pacstrap rootfs base linux linux-firmware vim arch-install-scripts
 fi
