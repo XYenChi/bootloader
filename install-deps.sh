@@ -10,7 +10,7 @@ fi
 pacman -Syu --needed --noconfirm \
   git base-devel curl\
   python3 flex bison swig python-setuptools \
-  gptfdisk multipath-tools arch-install-scripts riscv64-linux-gnu-gcc
+  gptfdisk arch-install-scripts riscv64-linux-gnu-gcc qemu-user-static qemu-user-static-binfmt
 
 curl -fLo pacman-extra-riscv64.conf \
   "https://raw.githubusercontent.com/archlinuxcn/repo/master/archlinuxcn/devtools-riscv64/pacman-extra-riscv64.conf"
