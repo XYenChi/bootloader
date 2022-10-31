@@ -25,7 +25,7 @@ losetup -f -P $IMAGE_FILE
 LODEV=$(losetup -a | grep $IMAGE_FILE | cut -d: -f1)
 echo $LODEV
 sgdisk --print $LODEV
-ls $LODEV/*
+ls /dev/loop*
 mkfs.ext4 "${LODEV}p3"
 mkdir rootfs
 mount "${LODEV}p3" rootfs/
