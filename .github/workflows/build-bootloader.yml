@@ -14,7 +14,7 @@ jobs:
       # so checkout@v3 will use wget and tar to prepare the repo.
       # This might lead to unexpected behavior, we need to prepare git before checkout.
       - name: Prepare Git
-        run: pacman -Syu git
+        run: pacman -Syu --noconfirm git
       - uses: actions/checkout@v3
       - name: Install deps
         run: |
