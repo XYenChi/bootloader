@@ -31,6 +31,7 @@ jobs:
         run: |
           git clone https://aur.archlinux.org/devtools-riscv64.git
           cd devtools-riscv64
+          chown -R nobody $PWD
           su nobody -s /bin/bash -c 'makepkg -s'
           pacman -U *.pkg.tar.*
       - name: Make image
