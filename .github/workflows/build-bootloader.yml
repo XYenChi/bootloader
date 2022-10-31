@@ -33,6 +33,6 @@ jobs:
           git clone https://aur.archlinux.org/devtools-riscv64.git
           cd devtools-riscv64
           chown -R nobody $PWD
-          sudo -u nobody makepkg -si
+          sudo -u nobody makepkg -si --noconfirm
       - name: Make image
         run: ./mk-image.sh cross-compile
