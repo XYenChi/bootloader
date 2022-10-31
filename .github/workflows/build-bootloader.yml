@@ -29,10 +29,10 @@ jobs:
         run: ./build-u-boot.sh cross-compile
       - name: Prepare devtools
         run: |
+          echo "ALL ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
           git clone https://aur.archlinux.org/devtools-riscv64.git
           cd devtools-riscv64
           chown -R nobody $PWD
-          su nobody -s /bin/bash -c 'makepkg -s'
-          pacman -U *.pkg.tar.*
+          sudo -u nobody 'makepkg -si'
       - name: Make image
         run: ./mk-image.sh cross-compile
