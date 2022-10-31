@@ -22,13 +22,14 @@ dd if=$PWD/repos/u-boot/u-boot.itb of=$IMAGE_FILE bs=512 seek=2082 conv=sync,not
 
 losetup -D
 losetup -f -P $IMAGE_FILE
+losetup -a
 mkfs.ext4 /dev/loop0p3
 mkdir rootfs
 mount /dev/loop0p3 rootfs/
 
 if is_cross_compile "$@"; then
   pacstrap \
-      -C /usr/share/devtools/pacman-extra-riscv64.conf \
+      -C ./pacman-extra-riscv64.conf \
       -M \
       ./rootfs \
       base linux linux-firmware vim arch-install-scripts
