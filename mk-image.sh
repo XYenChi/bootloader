@@ -24,6 +24,7 @@ losetup -D
 LODEV=$(losetup -f --show -P $IMAGE_FILE)
 
 if [[ -f /.dockerenv ]]; then
+  # Issue: https://github.com/moby/moby/issues/27886#issuecomment-417074845
   PARTITIONS=$(lsblk --raw --output "MAJ:MIN" --noheadings ${LODEV} | tail -n +2)
   COUNTER=1
   for i in $PARTITIONS; do
@@ -43,7 +44,8 @@ if is_cross_compile "$@"; then
       -C ./pacman-extra-riscv64.conf \
       -M \
       ./rootfs \
-      base linux linux-firmware vim arch-install-scripts
+      base
+  arch-chroot rootfs pacman --noconfirm -Syu linux linux-firmware vim arch-install-scripts
 else
   pacstrap rootfs base linux linux-firmware vim arch-install-scripts
 fi
