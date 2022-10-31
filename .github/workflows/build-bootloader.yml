@@ -19,6 +19,7 @@ jobs:
       - name: Install deps
         run: |
           ./install-deps.sh
+          git config --global --add safe.directory /__w/bootloader-thermal-fix/bootloader-thermal-fix
           git submodule update --init
       - name: Build-opensbi.sh
         run: ./build-opensbi.sh cross-compile
