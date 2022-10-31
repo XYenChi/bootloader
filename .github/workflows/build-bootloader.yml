@@ -31,7 +31,7 @@ jobs:
         run: |
           git clone https://aur.archlinux.org/devtools-riscv64.git
           cd devtools-riscv64
-          su nobody -c makepkg -s
+          su nobody -s /bin/bash -c 'makepkg -s'
           pacman -U *.pkg.tar.*
       - name: Make image
         run: ./mk-image.sh cross-compile
