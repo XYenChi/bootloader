@@ -16,7 +16,6 @@ sgdisk -g --clear -a 1 \
   --new=3:16384:-0       --change-name=3:rootfs --attributes=3:set:2  \
   $IMAGE_FILE
 
-partprobe
 # write u-boot into it
 dd if=$PWD/repos/u-boot/spl/u-boot-spl.bin of=$IMAGE_FILE bs=512 seek=34 conv=sync,notrunc
 dd if=$PWD/repos/u-boot/u-boot.itb of=$IMAGE_FILE bs=512 seek=2082 conv=sync,notrunc
@@ -24,8 +23,7 @@ dd if=$PWD/repos/u-boot/u-boot.itb of=$IMAGE_FILE bs=512 seek=2082 conv=sync,not
 losetup -D
 losetup -f -P $IMAGE_FILE
 LODEV=$(losetup -f)
-partprobe
-partprobe -s
+kpartx -f $LODEV
 mkfs.ext4 "${LODEV}p3"
 mkdir rootfs
 mount "${LODEV}p3" rootfs/
