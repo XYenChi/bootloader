@@ -18,10 +18,6 @@ jobs:
       - name: Prepare Git
         run: pacman -Syu --noconfirm git
       - uses: actions/checkout@v3
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v2
-        with:
-          platforms: riscv64
       - name: Install deps
         run: |
           ./install-deps.sh
