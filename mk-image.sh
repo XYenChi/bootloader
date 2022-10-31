@@ -23,8 +23,7 @@ dd if=$PWD/repos/u-boot/u-boot.itb of=$IMAGE_FILE bs=512 seek=2082 conv=sync,not
 
 losetup -D
 losetup -f -P $IMAGE_FILE
-LODEV=$(losetup -a | grep $IMAGE_FILE | cut -d: -f1)
-echo $LODEV
+LODEV=$(losetup -f)
 partprobe
 partprobe -s
 mkfs.ext4 "${LODEV}p3"
