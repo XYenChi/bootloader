@@ -21,9 +21,19 @@ dd if=$PWD/repos/u-boot/spl/u-boot-spl.bin of=$IMAGE_FILE bs=512 seek=34 conv=sy
 dd if=$PWD/repos/u-boot/u-boot.itb of=$IMAGE_FILE bs=512 seek=2082 conv=sync,notrunc
 
 losetup -D
-losetup -f -P $IMAGE_FILE
-LODEV=$(losetup -f)
-kpartx -f $LODEV
+LODEV=$(losetup -f --show -P $IMAGE_FILE)
+
+if [[ -f /.dockerenv ]]; then
+  PARTITIONS=$(lsblk --raw --output "MAJ:MIN" --noheadings ${LODEV} | tail -n +2)
+  COUNTER=1
+  for i in $PARTITIONS; do
+    MAJ=$(echo $i | cut -d: -f1)
+    MIN=$(echo $i | cut -d: -f2)
+    if [[ ! -e "${LODEV}p${COUNTER}" ]]; then mknod ${LODEV}p${COUNTER} b $MAJ $MIN; fi
+    COUNTER=$((COUNTER + 1))
+  done
+fi
+
 mkfs.ext4 "${LODEV}p3"
 mkdir rootfs
 mount "${LODEV}p3" rootfs/
