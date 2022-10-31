@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: archlinux:latest
-      options: "--privileged --device /dev/loop0p3"
+      options: "--privileged"
     steps:
       # There is no git in archlinux base image,
       # so checkout@v3 will use wget and tar to prepare the repo.
