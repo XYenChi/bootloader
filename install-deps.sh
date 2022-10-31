@@ -12,6 +12,4 @@ pacman -Syu --needed --noconfirm \
   python3 flex bison swig python-setuptools \
   gptfdisk arch-install-scripts
 
-if [[ ! -d repos/u-boot ]]; then
-  git submodule update --init
-fi
+git submodule update --init
