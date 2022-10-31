@@ -11,5 +11,3 @@ pacman -Syu --needed --noconfirm \
   git base-devel \
   python3 flex bison swig python-setuptools \
   gptfdisk arch-install-scripts
-
-git submodule update --init

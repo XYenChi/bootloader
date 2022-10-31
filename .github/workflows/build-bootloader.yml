@@ -12,7 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install deps
-        run: ./install-deps.sh
+        run: |
+          ./install-deps.sh
+          # There is no git in archlinux base image,
+          # so GitHub checkout will use wget and tar to prepare the repo
+          # We need to initialize it ourselves.
+          git init && git submodule update --init
       - name: Build-opensbi.sh
         run: ./build-opensbi.sh cross-compile
       - name: Build U-Boot
