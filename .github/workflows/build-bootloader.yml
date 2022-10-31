@@ -8,7 +8,9 @@ on:
 jobs:
   bootloader-build-job:
     runs-on: ubuntu-latest
-    container: archlinux:latest
+    container:
+      - image: archlinux:latest
+        options: "--privileged"
     steps:
       # There is no git in archlinux base image,
       # so checkout@v3 will use wget and tar to prepare the repo.
