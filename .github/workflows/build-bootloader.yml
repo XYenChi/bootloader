@@ -14,8 +14,8 @@ jobs:
       - name: Install deps
         run: ./install-deps.sh
       - name: Build-opensbi.sh
-        run: ./build-opensbi.sh
+        run: ./build-opensbi.sh cross-compile
       - name: Build U-Boot
-        run: ./build-u-boot.sh
+        run: ./build-u-boot.sh cross-compile
       - name: Make image
-        run: ./mk-image.sh
+        run: ./mk-image.sh cross-compile
