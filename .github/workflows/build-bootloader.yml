@@ -10,14 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
+      # There is no git in archlinux base image,
+      # so checkout@v3 will use wget and tar to prepare the repo.
+      # This might lead to unexpected behavior, we need to prepare git before checkout.
+      - name: Prepare Git
+        run: pacman -Syu git
       - uses: actions/checkout@v3
       - name: Install deps
         run: |
           ./install-deps.sh
-          # There is no git in archlinux base image,
-          # so GitHub checkout will use wget and tar to prepare the repo
-          # We need to initialize it ourselves.
-          git init && git submodule update --init
+          git submodule update --init
       - name: Build-opensbi.sh
         run: ./build-opensbi.sh cross-compile
       - name: Build U-Boot
