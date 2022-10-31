@@ -11,3 +11,7 @@ pacman -Syu --needed --noconfirm \
   git base-devel \
   python3 flex bison swig python-setuptools \
   gptfdisk arch-install-scripts
+
+if [[ ! -d repos ]]; then
+  git submodule update --init
+fi
