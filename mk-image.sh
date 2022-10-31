@@ -22,10 +22,11 @@ dd if=$PWD/repos/u-boot/u-boot.itb of=$IMAGE_FILE bs=512 seek=2082 conv=sync,not
 
 losetup -D
 losetup -f -P $IMAGE_FILE
-losetup -a
-mkfs.ext4 /dev/loop0p3
+LODEV=$(losetup -a | grep $IMAGE_FILE | cut -d: -f1)
+echo $LODEV
+mkfs.ext4 "${LODEV}p3"
 mkdir rootfs
-mount /dev/loop0p3 rootfs/
+mount "${LODEV}p3" rootfs/
 
 if is_cross_compile "$@"; then
   pacstrap \
