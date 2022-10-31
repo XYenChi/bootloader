@@ -8,20 +8,18 @@ on:
 jobs:
   bootloader-build-job:
     runs-on: ubuntu-latest
-    container:
-      image: archlinux:latest
-      options: "--privileged"
     steps:
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          image: archlinux:latest
+          platforms: riscv64
       # There is no git in archlinux base image,
       # so checkout@v3 will use wget and tar to prepare the repo.
       # This might lead to unexpected behavior, we need to prepare git before checkout.
       - name: Prepare Git
         run: pacman -Syu --noconfirm git
       - uses: actions/checkout@v3
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v2
-        with:
-          platforms: riscv64
       - name: Install deps
         run: |
           ./install-deps.sh
