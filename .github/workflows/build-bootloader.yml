@@ -1,0 +1,21 @@
+name: bootloader-builder
+on:
+  push:
+    branches:
+      - master
+      - ci
+
+jobs:
+  bootloader-build-job:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install deps
+        run: ./install-deps.sh
+      - name: Build-opensbi.sh
+        run: ./build-opensbi.sh
+      - name: Build U-Boot
+        run: ./build-u-boot.sh
+      - name: Make image
+        run: ./mk-image.sh
