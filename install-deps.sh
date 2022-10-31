@@ -10,4 +10,4 @@ fi
 pacman -Syu --needed --noconfirm \
   git base-devel \
   python3 flex bison swig python-setuptools \
-  gptfdisk arch-install-scripts
+  gptfdisk arch-install-scripts riscv64-linux-gnu-gcc
