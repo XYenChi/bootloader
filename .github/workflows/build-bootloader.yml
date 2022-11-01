@@ -18,4 +18,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: unmatched-bootloader-image
-          path: /artifact/image-*.raw
+          path: ${{ github.workspace }}/images/image-*.raw
