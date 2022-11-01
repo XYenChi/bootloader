@@ -13,19 +13,23 @@ mkdir -p images
 $DOCKER run \
   -v $PWD:/srcdir \
   -v $PWD/images:/artifact \
-  --priviledge \
+  --privileged \
   archlinux:latest \
-  bash -lc "
+  bash -lc '
+  cd /srcdir
+  git config --global --add safe.directory $PWD
+  git submodule update --init
   ./install-deps.sh
   ./build-opensbi.sh cross-compile
   ./build-u-boot.sh cross-compile
-  echo 'ALL ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers
+  echo "ALL ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
   git clone https://aur.archlinux.org/devtools-riscv64.git
-  cd devtools-riscv64
+  pushd devtools-riscv64
   chown -R nobody $PWD
   sudo -u nobody makepkg -si --noconfirm
+  popd
   ./mk-image.sh cross-compile
   mv image-$(date --rfc-3339=date).raw /artifact/
-"
+'
 
 ls -al $PWD/images
