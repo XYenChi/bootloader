@@ -1,5 +1,9 @@
 # bootloader
 
+## Pre-built Image
+
+在 [Action](https://github.com/XYenChi/bootloader/actions) 页面里选择一个构建成功的 workflow，点击进去，在页面最下方的 Artifacts 栏下载镜像。
+
 ## 脚本运行环境
 
 1. 使用 QEMU System 运行的 Arch RISC-V
