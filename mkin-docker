@@ -17,9 +17,9 @@ $DOCKER run \
   archlinux:latest \
   bash -lc '
   cd /srcdir
-  git config --global --add safe.directory $PWD
-  git submodule update --init
   ./install-deps.sh
+  git config --global --add safe.directory /srcdir
+  git submodule update --init
   ./build-opensbi.sh cross-compile
   ./build-u-boot.sh cross-compile
   echo "ALL ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
