@@ -75,3 +75,7 @@ dd if=image.raw of=/dev/sda status=progress
   * 复制一份 label 配置，把 label 改成 `arch-fallback`，menu label 改成 `Arch Linux (Fallback)`，root 部分改成
   `root=/dev/nvme0n1p1`，这个 label 用来第一次进入系统。
 4. 重启之后，第一次启动需要用 Arch Linux (Fallback) 来进入系统。
+
+## 使用 Docker 构建
+
+启动 dockerd，执行 `mkin-docker` 脚本。生成的镜像文件会放在 images/ 目录下。

@@ -21,14 +21,27 @@ dd if=$PWD/repos/u-boot/spl/u-boot-spl.bin of=$IMAGE_FILE bs=512 seek=34 conv=sy
 dd if=$PWD/repos/u-boot/u-boot.itb of=$IMAGE_FILE bs=512 seek=2082 conv=sync,notrunc
 
 losetup -D
-losetup -f -P $IMAGE_FILE
-mkfs.ext4 /dev/loop0p3
+LODEV=$(losetup -f --show -P $IMAGE_FILE)
+
+if [[ -f /.dockerenv ]]; then
+  # Issue: https://github.com/moby/moby/issues/27886#issuecomment-417074845
+  PARTITIONS=$(lsblk --raw --output "MAJ:MIN" --noheadings ${LODEV} | tail -n +2)
+  COUNTER=1
+  for i in $PARTITIONS; do
+    MAJ=$(echo $i | cut -d: -f1)
+    MIN=$(echo $i | cut -d: -f2)
+    if [[ ! -e "${LODEV}p${COUNTER}" ]]; then mknod ${LODEV}p${COUNTER} b $MAJ $MIN; fi
+    COUNTER=$((COUNTER + 1))
+  done
+fi
+
+mkfs.ext4 "${LODEV}p3"
 mkdir rootfs
-mount /dev/loop0p3 rootfs/
+mount "${LODEV}p3" rootfs/
 
 if is_cross_compile "$@"; then
   pacstrap \
-      -C /usr/share/devtools/pacman-extra-riscv64.conf \
+      -C ./pacman-extra-riscv64.conf \
       -M \
       ./rootfs \
       base linux linux-firmware vim arch-install-scripts
