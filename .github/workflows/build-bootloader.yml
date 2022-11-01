@@ -8,31 +8,9 @@ on:
 jobs:
   bootloader-build-job:
     runs-on: ubuntu-latest
-    container:
-      image: archlinux:latest
-      options: "--privileged"
     steps:
-      # There is no git in archlinux base image,
-      # so checkout@v3 will use wget and tar to prepare the repo.
-      # This might lead to unexpected behavior, we need to prepare git before checkout.
-      - name: Prepare Git
-        run: pacman -Syu --noconfirm git
+      - name: Setup rv64 binfmt
+        uses: docker/setup-qemu-action@v2
       - uses: actions/checkout@v3
-      - name: Install deps
-        run: |
-          ./install-deps.sh
-          git config --global --add safe.directory /__w/bootloader-thermal-fix/bootloader-thermal-fix
-          git submodule update --init
-      - name: Build-opensbi.sh
-        run: ./build-opensbi.sh cross-compile
-      - name: Build U-Boot
-        run: ./build-u-boot.sh cross-compile
-      - name: Prepare devtools
-        run: |
-          echo "ALL ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
-          git clone https://aur.archlinux.org/devtools-riscv64.git
-          cd devtools-riscv64
-          chown -R nobody $PWD
-          sudo -u nobody makepkg -si --noconfirm
-      - name: Make image
-        run: ./mk-image.sh cross-compile
+      - name: Build Image
+        run: ./mkin-docker
