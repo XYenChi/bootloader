@@ -12,6 +12,8 @@ jobs:
       - name: Setup rv64 binfmt
         uses: docker/setup-qemu-action@v2
       - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
       - name: Build Image
         run: ./mkin-docker
       - name: Upload Image

@@ -18,8 +18,6 @@ $DOCKER run \
   bash -lc '
   cd /srcdir
   ./install-deps.sh
-  git config --global --add safe.directory /srcdir
-  git submodule update --init
   ./build-opensbi.sh cross-compile
   ./build-u-boot.sh cross-compile
   ./mk-image.sh cross-compile
