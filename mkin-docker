@@ -21,7 +21,7 @@ $DOCKER run \
   ./build-opensbi.sh cross-compile
   ./build-u-boot.sh cross-compile
   ./mk-image.sh cross-compile
-  mv image-$(date --rfc-3339=date).raw /artifact/
+  mv arch-linux-$(date --rfc-3339=date).img /artifact/
 '
 
 ls -al $PWD/images
