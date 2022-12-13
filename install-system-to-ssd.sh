@@ -25,6 +25,7 @@ Name=end0
 DHCP=yes
 END
 
+mkdir -p /mnt/boot/extlinux
 tee -a /mnt/boot/extlinux/extlinux.conf << END
 default arch
 menu title U-Boot menu
