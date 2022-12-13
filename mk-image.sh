@@ -1,6 +1,6 @@
 . $PWD/utils.sh
 
-IMAGE_FILE="image-$(date --rfc-3339=date).raw"
+IMAGE_FILE="arch-linux-$(date --rfc-3339=date).img"
 
 # truncate will not allocate new space if file is already exist,
 # which might lead to some unexpected issue.
@@ -44,9 +44,9 @@ if is_cross_compile "$@"; then
       -C ./pacman-extra-riscv64.conf \
       -M \
       ./rootfs \
-      base linux linux-firmware vim arch-install-scripts
+      base linux linux-firmware vim arch-install-scripts gptfdisk
 else
-  pacstrap rootfs base linux linux-firmware vim arch-install-scripts
+  pacstrap rootfs base linux linux-firmware vim arch-install-scripts gptfdisk
 fi
 
 usermod --root $(realpath ./rootfs) --password $(openssl passwd -6 "archriscv") root
@@ -60,20 +60,27 @@ prompt 0
 timeout 50
 
 label arch
-        menu label Arch Linux
+        menu label Arch Linux(MMC)
         linux /boot/vmlinuz-linux
         initrd /boot/initramfs-linux-fallback.img
         fdtdir /boot/dtbs/
         append root=/dev/mmcblk0p3 rw earlycon
 END
 cp -r rootfs/usr/share/dtbs/*-arch*/ rootfs/boot/dtbs
-tee -a rootfs/etc/systemd/network/eth0.network << END
+tee -a rootfs/etc/systemd/network/end0.network << END
 [Match]
-Name=eth0
+Name=end0
 [Network]
 DHCP=yes
 END
 cp /etc/pacman.conf rootfs/etc/pacman.conf
+
+arch-chroot rootfs systemctl enable systemd-networkd
+arch-chroot rootfs systemctl enable systemd-resolved
+arch-chroot rootfs systemctl enable systemd-timesyncd
+
+cp ./install-system-to-ssd.sh rootfs/root
+cp ./add-packager.sh rootfs/root
 
 umount -l rootfs
 rmdir rootfs
