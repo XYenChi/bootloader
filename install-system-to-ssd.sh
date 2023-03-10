@@ -48,6 +48,8 @@ label arch-fallback
 END
 cp -r /mnt/usr/share/dtbs/*-arch*/ /mnt/boot/dtbs
 
+echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" >> /mnt/etc/sudoers
+
 ensure_services=(systemd-timesyncd systemd-networkd systemd-resolved sshd)
 for service in ${ensure_services[@]}; do
 	arch-chroot /mnt systemctl enable "$service"
