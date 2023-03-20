@@ -41,7 +41,7 @@ mount "${LODEV}p3" rootfs/
 
 if is_cross_compile "$@"; then
   pacstrap \
-      -C ./pacman-extra-riscv64.conf \
+      -C /usr/share/devtools/pacman-extra-riscv64.conf \
       -M \
       ./rootfs \
       base linux linux-firmware vim arch-install-scripts gptfdisk
